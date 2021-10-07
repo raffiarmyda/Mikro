@@ -7,5 +7,4 @@ type Transactions struct {
 	Product   Products `gorm:"foreignKey:product_id"`
 	Buyer     Users    `gorm:"foreignKey:buyer_id"`
 	Status    bool
-	Resi      string
 }

@@ -1,0 +1,41 @@
+{
+  "jwt": {
+    "secret": "a;o#219",
+    "expired": 1
+  },
+  "encrypt": {
+    "keystring": "5ff37e7594e33ce1dcedd17644dc542d",
+    "additional": "scr382"
+  },
+  "debug": true,
+  "databases": {
+    "postgres": {
+      "host": "localhost",
+      "user": "postgres",
+      "password": "raffi12345",
+      "dbname": "mikro",
+      "port": "5432",
+      "sslmode": "disable",
+      "timezone": "Asia/Jakarta"
+    },
+    "mongodb": {
+      "port": "27017",
+      "username": "",
+      "password": "",
+      "cluster": "localhost",
+      "dbname": "mikro",
+      "collection": {
+        "logger": "logs"
+      }
+    }
+  },
+  "context": {
+    "timeout": 2
+  },
+  "server": {
+    "address": {
+      "host": "0.0.0.0",
+      "port": "8080"
+    }
+  }
+}
