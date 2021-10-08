@@ -8,8 +8,16 @@ import (
 	"log"
 	"mikro/app/middlewares"
 	"mikro/app/routes"
+
 	_userUsecase "mikro/business/users"
 	_userDelivery "mikro/deliveries/users"
+
+	_transactionUsecase "mikro/business/transactions"
+	_transactionDelivery "mikro/deliveries/transactions"
+
+	_productUsecase "mikro/business/products"
+	_productDelivery "mikro/deliveries/products"
+
 	"mikro/repository/databases/postgres"
 	"mikro/repository/databases/records"
 	"mikro/repository/drivers/mongo"
@@ -83,10 +91,19 @@ func main() {
 	userUsecase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, &configJWT)
 	userDelivery := _userDelivery.NewUserController(userUsecase)
 
+	productRepository := postgres.NewPostgresProductRepository(connPostgres)
+	productUsecase := _productUsecase.NewProductUsecase(productRepository, userUsecase, timeoutContext)
+	productDelivery := _productDelivery.NewProductController(productUsecase)
+
+	transactionsRepository := postgres.NewPostgresTransactionRepository(connPostgres)
+	transactionsUsecase := _transactionUsecase.NewTransactionUsecase(transactionsRepository, productUsecase, userUsecase, timeoutContext)
+	transactionsDelivery := _transactionDelivery.NewTransactionController(transactionsUsecase)
 	routesInit := routes.ControllerList{
-		UserController:   *userDelivery,
-		LoggerMiddleware: *loggerMiddleware,
-		JWTMiddleware:    configJWT.Init(),
+		UserController:        *userDelivery,
+		TransactionController: *transactionsDelivery,
+		ProductController:     *productDelivery,
+		LoggerMiddleware:      *loggerMiddleware,
+		JWTMiddleware:         configJWT.Init(),
 	}
 
 	routesInit.RouteUsers(e)
