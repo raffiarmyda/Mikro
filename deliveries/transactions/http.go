@@ -31,7 +31,7 @@ func (ctrl *Controller) GetTransactionsController(c echo.Context) error {
 
 func (ctrl *Controller) GetDetailTransactionController(c echo.Context) error {
 	ctxNative := c.Request().Context()
-	id := c.Param("productId")
+	id := c.Param("transactionId")
 	convInt, errConvInt := strconv.Atoi(id)
 	if errConvInt != nil {
 		return deliveries.NewErrorResponse(c, http.StatusBadRequest, errConvInt)
@@ -62,7 +62,7 @@ func (ctrl *Controller) CreateTransactionController(c echo.Context) error {
 }
 
 func (cl *Controller) UpdateTransactionController(c echo.Context) error {
-	id := c.Param("productId")
+	id := c.Param("transactionId")
 	convId, err := strconv.Atoi(id)
 	if err != nil {
 		return deliveries.NewErrorResponse(c, http.StatusBadRequest, err)
@@ -86,7 +86,7 @@ func (cl *Controller) UpdateTransactionController(c echo.Context) error {
 }
 
 func (cl *Controller) DeleteTransactionController(c echo.Context) error {
-	id := c.Param("productId")
+	id := c.Param("transactionId")
 	convId, err := strconv.Atoi(id)
 	if err != nil {
 		return deliveries.NewErrorResponse(c, http.StatusBadRequest, err)

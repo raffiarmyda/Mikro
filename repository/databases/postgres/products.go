@@ -29,7 +29,7 @@ func (repo *ProductRepository) ProductsGetById(ctx context.Context, domain produ
 
 func (repo *ProductRepository) ProductsCreate(ctx context.Context, domain products.Domain) (products.Domain, error) {
 	product := records.ProductsFromDomain(domain)
-	err := repo.ConnPostgres.Create(&product)
+	err := repo.ConnPostgres.Joins("Seller").Create(&product)
 	if err.Error != nil {
 		return products.Domain{}, err.Error
 	}
@@ -38,7 +38,7 @@ func (repo *ProductRepository) ProductsCreate(ctx context.Context, domain produc
 
 func (repo *ProductRepository) ProductsGetAll(ctx context.Context) ([]products.Domain, error) {
 	var data []records.Products
-	err := repo.ConnPostgres.Find(&data)
+	err := repo.ConnPostgres.Joins("Seller").Find(&data)
 	if err.Error != nil {
 		return []products.Domain{}, err.Error
 	}
@@ -53,6 +53,8 @@ func (repo *ProductRepository) ProductsUpdate(ctx context.Context, domain produc
 	if repo.ConnPostgres.Save(&data).Error != nil {
 		return products.Domain{}, errors.New("bad requests")
 	}
+	product := records.Products{}
+	_ = repo.ConnPostgres.Joins("Seller").Find(&product, "products.id = ?", data.ID)
 	return data.ProductsToDomain(), nil
 }
 

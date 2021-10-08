@@ -64,7 +64,6 @@ func (ctrl *Controller) CreateUserController(c echo.Context) error {
 func (ctrl *Controller) LoginUserController(c echo.Context) error {
 	var login users.Domain
 	var err error
-	var token string
 	ctxNative := c.Request().Context()
 
 	request := requests.UserLogin{}
@@ -76,7 +75,7 @@ func (ctrl *Controller) LoginUserController(c echo.Context) error {
 	if err != nil {
 		return deliveries.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return deliveries.NewSuccessResponse(c, responses.FromUsersDomainToLogin(login, token))
+	return deliveries.NewSuccessResponse(c, responses.FromUsersDomainToLogin(login))
 }
 
 func (cl *Controller) UpdateUserController(c echo.Context) error {

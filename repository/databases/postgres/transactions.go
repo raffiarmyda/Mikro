@@ -20,7 +20,7 @@ func NewPostgresTransactionRepository(conn *gorm.DB) *TransactionRepository {
 
 func (repo *TransactionRepository) TransactionsGetById(ctx context.Context, domain transactions.Domain) (transactions.Domain, error) {
 	var product records.Transactions
-	err := repo.ConnPostgres.Find(&product, "id = ?", domain.ID)
+	err := repo.ConnPostgres.Preload("Product").Joins("Buyer").Find(&product, "transactions.id = ?", domain.ID)
 	if err.Error != nil {
 		return transactions.Domain{}, err.Error
 	}
@@ -29,11 +29,13 @@ func (repo *TransactionRepository) TransactionsGetById(ctx context.Context, doma
 
 func (repo *TransactionRepository) TransactionsCreate(ctx context.Context, domain transactions.Domain) (transactions.Domain, error) {
 	product := records.TransactionsFromDomain(domain)
-	err := repo.ConnPostgres.Create(&product)
+	err := repo.ConnPostgres.Preload("Product").Joins("Buyer").Create(&product)
 	if err.Error != nil {
 		return transactions.Domain{}, err.Error
 	}
-	return product.TransactionsToDomain(), nil
+	var productCreate records.Transactions
+	_ = repo.ConnPostgres.Preload("Product").Joins("Buyer").Find(&productCreate, "transactions.id = ?", product.Id)
+	return productCreate.TransactionsToDomain(), nil
 }
 
 func (repo *TransactionRepository) TransactionsGetAll(ctx context.Context) ([]transactions.Domain, error) {
@@ -50,7 +52,7 @@ func (repo *TransactionRepository) TransactionsUpdate(ctx context.Context, domai
 	data.BuyerId = domain.BuyerId
 	data.ProductId = domain.ProductId
 
-	if repo.ConnPostgres.Save(&data).Error != nil {
+	if repo.ConnPostgres.Preload("Product").Joins("Buyer").Save(&data).Error != nil {
 		return transactions.Domain{}, errors.New("bad requests")
 	}
 	return data.TransactionsToDomain(), nil

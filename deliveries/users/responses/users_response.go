@@ -18,7 +18,7 @@ type UsersResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func FromUsersDomainToLogin(domain users.Domain, token string) LoginResponse {
+func FromUsersDomainToLogin(domain users.Domain) LoginResponse {
 	response := UsersResponse{
 		ID:        domain.ID,
 		Name:      domain.Name,
@@ -31,7 +31,7 @@ func FromUsersDomainToLogin(domain users.Domain, token string) LoginResponse {
 		UpdatedAt: domain.UpdatedAt,
 	}
 	loginResponse := LoginResponse{}
-	loginResponse.SessionToken = token
+	loginResponse.SessionToken = domain.Token
 	loginResponse.User = response
 	return loginResponse
 }

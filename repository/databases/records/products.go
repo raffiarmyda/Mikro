@@ -41,6 +41,7 @@ func ProductsFromDomain(domain products.Domain) Products {
 	return Products{
 		ID:       domain.ID,
 		Name:     domain.Name,
+		Price:    domain.Price,
 		SellerId: domain.SellerId,
 	}
 }
