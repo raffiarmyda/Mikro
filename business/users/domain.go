@@ -6,17 +6,19 @@ import (
 )
 
 type Domain struct {
-	ID        int
-	Name      string
-	StoreName string
-	City      string
-	Phone     string
-	Username  string
-	IsAdmin   bool
-	Password  string
-	Token     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID          int
+	Name        string
+	StoreName   string
+	City        string
+	Phone       string
+	Username    string
+	IsAdmin     bool
+	BankAccount string
+	NoAccount   string
+	Password    string
+	Token       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Usecase interface {

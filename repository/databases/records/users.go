@@ -7,32 +7,36 @@ import (
 )
 
 type Users struct {
-	ID        int `gorm:"primaryKey"`
-	Name      string
-	StoreName string
-	City      string
-	Phone     string
-	IsAdmin   bool
-	Username  string
-	Password  string
-	CreatedAt time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID          int `gorm:"primaryKey"`
+	Name        string
+	StoreName   string
+	City        string
+	Phone       string
+	BankAccount string
+	NoAccount   string
+	IsAdmin     bool
+	Username    string
+	Password    string
+	CreatedAt   time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt   time.Time      `gorm:"autoUpdateTime"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 func (user *Users) UsersToDomain() users.Domain {
 	return users.Domain{
-		ID:        user.ID,
-		Name:      user.Name,
-		City:      user.City,
-		Phone:     user.Phone,
-		StoreName: user.StoreName,
-		Username:  user.Username,
-		IsAdmin:   user.IsAdmin,
-		Password:  user.Password,
-		Token:     user.StoreName,
-		CreatedAt: time.Time{},
-		UpdatedAt: time.Time{},
+		ID:          user.ID,
+		Name:        user.Name,
+		City:        user.City,
+		Phone:       user.Phone,
+		StoreName:   user.StoreName,
+		BankAccount: user.BankAccount,
+		Username:    user.Username,
+		IsAdmin:     user.IsAdmin,
+		Password:    user.Password,
+		NoAccount:   user.NoAccount,
+		Token:       user.StoreName,
+		CreatedAt:   time.Time{},
+		UpdatedAt:   time.Time{},
 	}
 }
 
@@ -46,13 +50,15 @@ func UsersToListDomain(data []Users) []users.Domain {
 
 func UsersFromDomain(domain users.Domain) Users {
 	return Users{
-		ID:        domain.ID,
-		Name:      domain.Name,
-		City:      domain.City,
-		Phone:     domain.Phone,
-		StoreName: domain.StoreName,
-		Username:  domain.Username,
-		IsAdmin:   domain.IsAdmin,
-		Password:  domain.Password,
+		ID:          domain.ID,
+		Name:        domain.Name,
+		City:        domain.City,
+		BankAccount: domain.BankAccount,
+		Phone:       domain.Phone,
+		NoAccount:   domain.NoAccount,
+		StoreName:   domain.StoreName,
+		Username:    domain.Username,
+		IsAdmin:     domain.IsAdmin,
+		Password:    domain.Password,
 	}
 }

@@ -62,6 +62,8 @@ func (repo *UserRepository) UsersUpdate(ctx context.Context, domain users.Domain
 	data.Phone = domain.Phone
 	data.City = domain.City
 	data.IsAdmin = domain.IsAdmin
+	data.NoAccount = domain.NoAccount
+	data.BankAccount = domain.BankAccount
 	data.Username = domain.Username
 
 	if repo.ConnPostgres.Save(&data).Error != nil {
